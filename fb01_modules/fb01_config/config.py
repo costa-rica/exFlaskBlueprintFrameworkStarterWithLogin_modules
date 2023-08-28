@@ -4,25 +4,25 @@ from dotenv import load_dotenv
 
 load_dotenv()
 print("- reading dd07modules/fb01_config/config.py")
-print(f"- FLASK_ENV: {os.environ.get('FLASK_ENV')}")
+print(f"- FLASK_CONFIG_TYPE: {os.environ.get('FLASK_CONFIG_TYPE')}")
 print(f"- FLASK_DEBUG: {os.environ.get('FLASK_DEBUG')}")
 
-match os.environ.get('FLASK_ENV'):
+match os.environ.get('FLASK_CONFIG_TYPE'):
     case 'dev' :
         with open(os.path.join(os.environ.get('CONFIG_PATH_SERVER'), os.environ.get('CONFIG_FILE_NAME'))) as env_file:
             env_dict = json.load(env_file)
-        os.environ["WEB_ROOT"] = "/home/nick/applications/exFlaskBlueprintFrameworkStarterWithLogin_dev/"
+        # os.environ["PROJECT_ROOT"] = "/home/nick/applications/exFlaskBlueprintFrameworkStarterWithLogin_dev/"
     case 'prod' :
         with open(os.path.join(os.environ.get('CONFIG_PATH_SERVER'), os.environ.get('CONFIG_FILE_NAME'))) as env_file:
             env_dict = json.load(env_file)
-        os.environ["WEB_ROOT"] = "/home/nick/applications/exFlaskBlueprintFrameworkStarterWithLogin/"
+        # os.environ["PROJECT_ROOT"] = "/home/nick/applications/exFlaskBlueprintFrameworkStarterWithLogin/"
     case _:
         with open(os.path.join(os.environ.get('CONFIG_PATH_LOCAL'), os.environ.get('CONFIG_FILE_NAME'))) as env_file:
             env_dict = json.load(env_file)
-        os.environ["WEB_ROOT"] = "/Users/nick/Documents/exFlaskBlueprintFrameworkStarterWithLogin/"
+        # os.environ["PROJECT_ROOT"] = "/Users/nick/Documents/exFlaskBlueprintFrameworkStarterWithLogin/"
 
 
-# if os.path.join(os.environ.get('FLASK_ENV'))  == 'local':
+# if os.path.join(os.environ.get('FLASK_CONFIG_TYPE'))  == 'local':
 #     print("- reading CONFIG_PATH_LOCAL")
 #     # print(f"- {os.environ.get('CONFIG_PATH_LOCAL')}")
 #     # print(f"- {os.environ.get('CONFIG_FILE_NAME')}")
@@ -75,6 +75,7 @@ class ConfigLocal(ConfigBasic):
     
     def __init__(self):
         super().__init__()
+        self.PROJECT_ROOT = os.environ.get('PROJECT_LOCAL_ROOT')
         # Database
         self.DB_ROOT = self.DB_LOCAL_ROOT
         self.SQL_URI_USERS = f"sqlite:///{self.DB_LOCAL_ROOT}{os.environ.get('DB_NAME_USERS')}"
@@ -97,6 +98,7 @@ class ConfigDev(ConfigBasic):
 
     def __init__(self):
         super().__init__()
+        self.PROJECT_ROOT = os.environ.get('PROJECT_DEV_ROOT')
         # Database
         self.DB_ROOT = self.DB_DEV_ROOT
         self.SQL_URI_USERS = f"sqlite:///{self.DB_DEV_ROOT}{os.environ.get('DB_NAME_USERS')}"
@@ -119,6 +121,7 @@ class ConfigProd(ConfigBasic):
         
     def __init__(self):
         super().__init__()
+        self.PROJECT_ROOT = os.environ.get('PROJECT_PROD_ROOT')
         # Database
         self.DB_ROOT = self.DB_PROD_ROOT
         self.SQL_URI_USERS = f"sqlite:///{self.DB_PROD_ROOT}{os.environ.get('DB_NAME_USERS')}"
